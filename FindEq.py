@@ -1,3 +1,24 @@
+class Stack:
+    def __init__(self):
+        self.stack = []
+        self.len = self.getLength()
+
+        def push(self, value):
+            self.stack.append(value)
+            self.len = self.len + 1
+        def pop(self):
+            if not self.isEmpty():
+                x = self.stack.pop()
+                self.len = self.len + 1
+            return x
+
+        def top(self):
+            return self.stack[getLength()-1]
+        def isEmpty(self):
+            return self.getLength() == 0
+        def getLength(self):
+            return len(self.stack)
+
 class Chromosome:
 
     operators = ['+', '-', '*', '/']
