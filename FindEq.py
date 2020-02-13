@@ -34,13 +34,24 @@ class Chromosome:
         self.evalStack = Stack()
         inorder(self.tree, self.evalStack)
         print(self.evalStack.stack)
+        #once stack reaches lenght 3, we will evaluate that expression
+        #
         
+
+        #randomly generate strings of expressions and just put them in stacks and do it all based on that alone
+        #for crossover and/or mutation, make a separate array for the indeces of the operators in a chromosome's
+        #expression. This way, we can guarantee a subtree from random picking.
+
+
     def eval(self):
         while not self.evalStack.isEmpty():
             n1 = self.evalStack.pop()
             if n1 == 'x':
+                pass
             elif n1 > -6 or n1 < 6:
+                pass
             else:
+                pass
 
 def childNodes(i):
     return (2 * i) + 1, (2 * i) + 2
@@ -65,19 +76,7 @@ def inorder(a, stack, i=0):
        #print(a[i])
     inorder(a, stack, l)
 
-    print(i)
-
-    left_sum = eval(a, l)
-    right_sum = eval(a, r)
-
-    if a[i] == '+':
-        return left_sum + right_sum
-    elif a[i] == '-':
-        return left_sum - right_sum
-    elif a[i] == '*':
-        return left_sum * right_sum
-    elif a[i] == '/':
-        return left_sum / right_sum
+    
 
 
 ###
