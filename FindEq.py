@@ -1,3 +1,10 @@
+import math
+import random
+
+# Brian Spencer
+# CSC 320
+# Assignment 2: find the equation of a line given inputs and outputs of that function, genetically.
+
 class Stack:
     def __init__(self):
         self.stack = []
@@ -13,11 +20,16 @@ class Stack:
             self.len = self.len - 1
         return x
 
+    def remove(self);
+        if not self.isEmpty():
+            self.stack.pop()
+            self.len = self.len - 1
+
     def top(self):
-        return self.stack[getLen()-1]
+        return self.stack[self.len-1]
 
     def isEmpty(self):
-        return self.getLen() == 0
+        return self.len == 0
 
 class Chromosome:
 
@@ -53,14 +65,22 @@ class Chromosome:
             else:
                 pass
 
-def childNodes(i):
+    def evalFitness(self):
+        return 1
+
+    def crossover(self, oExpression):
+
+    def mutate(self):
+        
+
+def childrenNodesIndeces(i):
     return (2 * i) + 1, (2 * i) + 2
 
 
 def traversed(a, i=0, d=0):
     if i >= len(a):
         return
-    l, r = childNodes(i)
+    l, r = childrenNodesIndeces(i)
     traversed(a, r, d=d + 1)
     if not str(a[i]) == "None":
         print("   " * d + str(a[i]))
@@ -69,7 +89,7 @@ def traversed(a, i=0, d=0):
 def inorder(a, stack, i=0):
     if i >= len(a):
         return
-    l, r = childNodes(i)
+    l, r = childrenNodesIndeces(i)
     inorder(a, stack, r)
     if str(a[i]) != "None":
         stack.push(a[i])
