@@ -3,7 +3,7 @@ import random
 
 # Brian Spencer
 # CSC 320
-# Assignment 2: find the equation of a line given inputs and outputs of that function, genetically.
+# Assignment 2: find the equation of a line given inputs and outputs of that function, genetically. 
 
 class Stack:
     def __init__(self):
@@ -20,7 +20,7 @@ class Stack:
             self.len = self.len - 1
         return x
 
-    def remove(self);
+    def remove(self):
         if not self.isEmpty():
             self.stack.pop()
             self.len = self.len - 1
@@ -34,14 +34,16 @@ class Stack:
 class Chromosome:
 
     operators = ['+', '-', '*', '/']
-    numbers = [-5, -4, -3, -2, -1, 0, 'x', 1, 2, 3, 4, 5]
+    numbers = [-5, -4, -3, -2, -1, 'x', 'x', 1, 2, 3, 4, 5]
+
+    # 1/2 x * x
     x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
-    y_values = [0, .005, .020, .045, .080, .125, .180,
-                .245, .320, .405]
+    y_values = [0, .005, .020, .045, .080, .125, .180, .245, .320, .405]
 
     # constructor
     def __init__(self):
-        self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+        #self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+        self.tree = self.genTree()
         self.expression = []
         self.evalStack = Stack()
         inorder(self.tree, self.evalStack)
@@ -54,7 +56,7 @@ class Chromosome:
         #for crossover and/or mutation, make a separate array for the indeces of the operators in a chromosome's
         #expression. This way, we can guarantee a subtree from random picking.
 
-
+    
     def eval(self):
         while not self.evalStack.isEmpty():
             n1 = self.evalStack.pop()
@@ -65,13 +67,17 @@ class Chromosome:
             else:
                 pass
 
-    def evalFitness(self):
-        return 1
-
-    def crossover(self, oExpression):
-
-    def mutate(self):
+    def genTree(self):
+        #values between -5 and 5 or x (except 0?).
+        #all foru basic operands (+, -, *, /)
         
+        return
+    def evalFitness(self):
+        return
+    def crossover(self, oExpression):
+        return
+    def mutate(self):
+        return 
 
 def childrenNodesIndeces(i):
     return (2 * i) + 1, (2 * i) + 2
