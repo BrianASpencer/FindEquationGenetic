@@ -42,13 +42,14 @@ class Chromosome:
 
     # constructor
     def __init__(self):
-        #self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+        self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
         self.tree = self.genTree()
         self.expression = []
         self.evalStack = Stack()
         #evaluates the tree expression
         inorder(self.tree, self.evalStack)
-        print(self.evalStack.stack)
+        #print(self.evalStack.stack)
+        #print(self.evalStack.stack)
         #once stack reaches lenght 3, we will evaluate that expression
         #
         
@@ -66,6 +67,8 @@ class Chromosome:
             elif n1 > -6 or n1 < 6:
                 pass
             else:
+                # pass two values and operator
+                doOp()
                 pass
 
     def genTree(self):
@@ -125,15 +128,15 @@ def traversed(a, i=0, d=0):
         print("   " * d + str(a[i]))
     traversed(a, l, d=d + 1)
 
-def inorder(a, stack, i=0):
+def inorder(a, i=0):
     if i >= len(a):
         return
     l, r = childrenNodesIndeces(i)
-    inorder(a, stack, r)
+    inorder(a, r)
     if str(a[i]) != "None":
         stack.push(a[i])
-       #print(a[i])
-    inorder(a, stack, l)
+        print(a[i])
+    inorder(a, l)
 
     
 
@@ -144,9 +147,11 @@ def main():
     population = []
     a = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
     for i in range(0, 1):
-        population.append(Chromosome())
+        #population.append(Chromosome())
+        pass
     #traversed(population[0].tree)
     #inorder(population[0].tree)
+    inorder(a)
 
 if __name__ == "__main__":
     main()
