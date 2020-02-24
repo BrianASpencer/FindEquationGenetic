@@ -34,7 +34,7 @@ class Stack:
 class Chromosome:
 
     operators = ['+', '-', '*', '/']
-    numbers = [-5, -4, -3, -2, -1, 'x', 'x', 1, 2, 3, 4, 5]
+    numbers = [-5, -4, -3, -2, -1, 'x', 0, 'x', 1, 2, 3, 4, 5]
 
     # 1/2 x * x
     x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
@@ -46,6 +46,7 @@ class Chromosome:
         self.tree = self.genTree()
         self.expression = []
         self.evalStack = Stack()
+        #evaluates the tree expression
         inorder(self.tree, self.evalStack)
         print(self.evalStack.stack)
         #once stack reaches lenght 3, we will evaluate that expression
@@ -70,6 +71,38 @@ class Chromosome:
     def genTree(self):
         #values between -5 and 5 or x (except 0?).
         #all foru basic operands (+, -, *, /)
+        #includes the None values for the tree
+        """
+                 1
+              *
+                 3
+           -
+                 None
+              5
+                 None
+        /
+                 None
+              2
+                 None
+           +
+                 None
+              1
+                 None
+
+        ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+
+        1+2/5-1*3
+        """
+
+        flag = True
+        while flag:
+            # randomly pick between an operator and a number for each node,
+            # then pick its leaf nodes? (increment a var that'll keep track of num of parent nodes)
+            # stop generating at terminal (number) values
+            # so any number becomes a leaf -- will never be a parent
+            # an operator will always be a parent node
+            pass
+
         
         return
     def evalFitness(self):
