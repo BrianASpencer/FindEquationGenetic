@@ -1,5 +1,5 @@
 import math
-import random
+from random import randint
 
 # Brian Spencer
 # CSC 320
@@ -33,27 +33,27 @@ class Stack:
 
 class Chromosome:
 
-    operators = ['+', '-', '*', '/']
-    numbers = [-5, -4, -3, -2, -1, 'x', 0, 'x', 1, 2, 3, 4, 5]
 
-    # 1/2 x * x
-    x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
-    y_values = [0, .005, .020, .045, .080, .125, .180, .245, .320, .405]
 
     # constructor
     def __init__(self):
-        self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
-        self.tree = self.genTree()
+        #self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+        self.tree = []
         self.expression = []
         self.evalStack = Stack()
         #evaluates the tree expression
-        inorder(self.tree, self.evalStack)
+        #inorder(self.tree, self.evalStack)
         #print(self.evalStack.stack)
         #print(self.evalStack.stack)
         #once stack reaches lenght 3, we will evaluate that expression
         #
-        
+        self.operators = ['+', '-', '*', '/']
+        self.numbers = [-5, -4, -3, -2, -1, 'x', 0, 'x', 1, 2, 3, 4, 5]
 
+        # 1/2 x * x
+        self.x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
+        self.y_values = [0, .005, .020, .045, .080, .125, .180, .245, .320, .405]
+        self.genTree()
         #randomly generate strings of expressions and just put them in stacks and do it all based on that alone
         #for crossover and/or mutation, make a separate array for the indeces of the operators in a chromosome's
         #expression. This way, we can guarantee a subtree from random picking.
@@ -96,15 +96,45 @@ class Chromosome:
 
         1+2/5-1*3
         """
-
+        i = 0
+        r = randint(0,1)
+        if r == 0:
+            t = randint(0, len(self.operators)-1)
+            self.tree.append(self.operators[t])
+        else:
+            t = randint(0, len(self.numbers) - 1)
+            self.tree.append(self.numbers[t])
+        i += 1
         flag = True
-        while flag:
+        while i < eqLength + 2:
             # randomly pick between an operator and a number for each node,
             # then pick its leaf nodes? (increment a var that'll keep track of num of parent nodes)
             # stop generating at terminal (number) values
             # so any number becomes a leaf -- will never be a parent
             # an operator will always be a parent node
-            pass
+            r = randint(0,1)
+
+            parent = findOpParent(i, len(self.tree))
+
+            #['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
+
+            if r == 0:
+                t = randint(0, len(self.operators)-1)
+                if isOp(self.tree[parent]):
+                    #if isOp(self.tree[i-1]):
+                    self.tree.append(self.operators[t])
+                elif not isNone(self.tree[parent]):
+                    self.tree.append(None)
+            else:
+                t = randint(0, len(self.numbers) - 1)
+                if not isOp(self.tree[parent]):
+                    if not isNone(self.tree[parent]):
+                        self.tree.append(None)
+                else:
+                    self.tree.append(self.numbers[t])
+            i += 1
+            eqLength = len(self.tree)
+        print(self.tree)
 
         
         return
@@ -115,9 +145,29 @@ class Chromosome:
     def mutate(self):
         return 
 
+def findOpParent(c, len):
+    for i in range(0, len):
+        l, r = childrenNodesIndeces(i)
+        """
+        if c == r:
+            return i, "right child"
+        else:
+            return i, "left child"
+        """
+        if c == l or c == r:
+            return i
+    return -1
+def isOp(e):
+    if e == '+' or e == '-' or e == '*' or e == '/':
+        return True
+    return False
+def isNone(e):
+    if str(e) == "None":
+        return True
+    return False
+
 def childrenNodesIndeces(i):
     return (2 * i) + 1, (2 * i) + 2
-
 
 def traversed(a, i=0, d=0):
     if i >= len(a):
@@ -134,7 +184,6 @@ def inorder(a, i=0):
     l, r = childrenNodesIndeces(i)
     inorder(a, r)
     if str(a[i]) != "None":
-        stack.push(a[i])
         print(a[i])
     inorder(a, l)
 
@@ -147,11 +196,11 @@ def main():
     population = []
     a = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
     for i in range(0, 1):
-        #population.append(Chromosome())
+        population.append(Chromosome())
         pass
-    #traversed(population[0].tree)
+    traversed(population[0].tree)
     #inorder(population[0].tree)
-    inorder(a)
+    #inorder(a)
 
 if __name__ == "__main__":
     main()
