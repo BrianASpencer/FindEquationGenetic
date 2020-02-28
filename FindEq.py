@@ -40,6 +40,7 @@ class Chromosome:
         #self.tree = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
         self.tree = []
         self.expression = []
+        self.exp = ""
         self.evalStack = Stack()
         #evaluates the tree expression
         #inorder(self.tree, self.evalStack)
@@ -54,22 +55,60 @@ class Chromosome:
         self.x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
         self.y_values = [0, .005, .020, .045, .080, .125, .180, .245, .320, .405]
         self.genTree()
+        self.inorder(self.tree)
+        self.eval()
+
         #randomly generate strings of expressions and just put them in stacks and do it all based on that alone
         #for crossover and/or mutation, make a separate array for the indeces of the operators in a chromosome's
         #expression. This way, we can guarantee a subtree from random picking.
 
-    
+    def inorder(self, a, i=0):
+        if i >= len(a):
+            return
+        l, r = childrenNodesIndeces(i)
+        self.inorder(a, r)
+        if str(a[i]) != "None":
+            self.exp = self.exp + str(a[i])
+        self.inorder(a, l)
+
     def eval(self):
-        while not self.evalStack.isEmpty():
-            n1 = self.evalStack.pop()
-            if n1 == 'x':
-                pass
-            elif n1 > -6 or n1 < 6:
-                pass
-            else:
-                # pass two values and operator
-                doOp()
-                pass
+        oper = ''
+        op1 = -6
+        op2 = -6
+        for i in range(0, len(self.exp)):
+            element = self.exp[i]
+            if isOp(element):
+                oper = element
+            elif op1 == -6:
+                if element == 'x':
+                    op1 = 1
+                else:
+                    op1 = element
+            elif op2 == -6:
+                if element == 'x':
+                    op2 = 1
+                else:
+                    op2 = element
+                print(self.doOp(op1, op2, oper))
+                op1 = -6
+                op2 = -6
+
+    def doOp(self, n1, n2, op):
+        print('n1: ',n1)
+        print('n2: ',n2)
+        print('op: ',op)
+        n1 = int(n1)
+        n2 = int(n2)
+        if op == '+':
+            return n1 + n2
+        elif op == '-':
+            return n1 - n2
+        elif op == '*':
+            return n1 * n2
+        else:
+            return n1 / n2
+
+
 
     def genTree(self):
         #values between -5 and 5 or x (except 0?).
@@ -105,7 +144,7 @@ class Chromosome:
             t = randint(0, len(self.numbers) - 1)
             self.tree.append(self.numbers[t])
         i += 1
-        flag = True
+        eqLength = len(self.tree)
         while i < eqLength + 2:
             # randomly pick between an operator and a number for each node,
             # then pick its leaf nodes? (increment a var that'll keep track of num of parent nodes)
@@ -169,6 +208,7 @@ def isNone(e):
 def childrenNodesIndeces(i):
     return (2 * i) + 1, (2 * i) + 2
 
+
 def traversed(a, i=0, d=0):
     if i >= len(a):
         return
@@ -177,16 +217,6 @@ def traversed(a, i=0, d=0):
     if not str(a[i]) == "None":
         print("   " * d + str(a[i]))
     traversed(a, l, d=d + 1)
-
-def inorder(a, i=0):
-    if i >= len(a):
-        return
-    l, r = childrenNodesIndeces(i)
-    inorder(a, r)
-    if str(a[i]) != "None":
-        print(a[i])
-    inorder(a, l)
-
     
 
 
@@ -198,7 +228,7 @@ def main():
     for i in range(0, 1):
         population.append(Chromosome())
         pass
-    traversed(population[0].tree)
+    #traversed(population[0].tree)
     #inorder(population[0].tree)
     #inorder(a)
 
