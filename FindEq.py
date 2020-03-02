@@ -49,14 +49,14 @@ class Chromosome:
         #once stack reaches lenght 3, we will evaluate that expression
         #
         self.operators = ['+', '-', '*', '/']
-        self.numbers = [-5, -4, -3, -2, -1, 'x', 0, 'x', 1, 2, 3, 4, 5]
+        self.numbers = [-5, -4, -3, -2, -1, 'x', 'x', 1, 2, 3, 4, 5]
 
         # 1/2 x * x
         self.x_values = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
         self.y_values = [0, .005, .020, .045, .080, .125, .180, .245, .320, .405]
         self.genTree()
         self.inorder(self.tree)
-        self.eval()
+        self.evalFitness()
 
         #randomly generate strings of expressions and just put them in stacks and do it all based on that alone
         #for crossover and/or mutation, make a separate array for the indeces of the operators in a chromosome's
@@ -71,27 +71,29 @@ class Chromosome:
             self.exp = self.exp + str(a[i])
         self.inorder(a, l)
 
-    def eval(self):
+    def eval(self, val):
         oper = ''
         op1 = -6
         op2 = -6
+        value = 0
         for i in range(0, len(self.exp)):
             element = self.exp[i]
             if isOp(element):
                 oper = element
             elif op1 == -6:
                 if element == 'x':
-                    op1 = 1
+                    op1 = val
                 else:
-                    op1 = element
+                    op1 = int(element)
             elif op2 == -6:
                 if element == 'x':
-                    op2 = 1
+                    op2 = val
                 else:
-                    op2 = element
-                print(self.doOp(op1, op2, oper))
+                    op2 = int(element)
+                value = self.doOp(op1, op2, oper)
                 op1 = -6
                 op2 = -6
+        return value
 
     def doOp(self, n1, n2, op):
         print('n1: ',n1)
@@ -178,7 +180,11 @@ class Chromosome:
         
         return
     def evalFitness(self):
-        return
+        fitness = 0
+        for i in range(len(self.x_values)):
+            fitness += self.eval(self.x_values[i]) - self.y_values[i]
+        print(fitness**2)
+        return fitness**2
     def crossover(self, oExpression):
         return
     def mutate(self):
@@ -225,12 +231,8 @@ def main():
     populationSize = 600
     population = []
     a = ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
-    for i in range(0, 1):
+    for i in range(0, 2):
         population.append(Chromosome())
-        pass
-    #traversed(population[0].tree)
-    #inorder(population[0].tree)
-    #inorder(a)
 
 if __name__ == "__main__":
     main()
