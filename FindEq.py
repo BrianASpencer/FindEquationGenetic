@@ -132,9 +132,7 @@ class Chromosome:
                  None
               1
                  None
-
         ['/', '+', '-', 1, 2, 5, '*', None, None, None, None, None, None, 3, 1]
-
         1+2/5-1*3
         """
         i = 0
@@ -162,17 +160,19 @@ class Chromosome:
             if r == 0:
                 t = randint(0, len(self.operators)-1)
                 if isOp(self.tree[parent]):
-                    #if isOp(self.tree[i-1]):
                     self.tree.append(self.operators[t])
                 elif not isNone(self.tree[parent]):
                     self.tree.append(None)
-            else:
+                    self.tree.append(None)
+                    i+= 1
+            elif r == 1:
                 t = randint(0, len(self.numbers) - 1)
-                if not isOp(self.tree[parent]):
-                    if not isNone(self.tree[parent]):
-                        self.tree.append(None)
-                else:
+                if isOp(self.tree[parent]):
                     self.tree.append(self.numbers[t])
+                elif not isNone(self.tree[parent]):
+                    self.tree.append(None)
+                    self.tree.append(None)
+                    i += 1
             i += 1
             eqLength = len(self.tree)
         print(self.tree)
@@ -249,6 +249,5 @@ if __name__ == "__main__":
       1
       
 (1+2)/(5-(1*3))
-
 1+2/5-1*3
 """
